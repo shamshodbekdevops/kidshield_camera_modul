@@ -129,3 +129,32 @@ Shuning uchun frontend shu origin orqali backendga so'rov yuborishi mumkin.
 - Eventlar 2-5 oralig'ida paydo bo'ldimi
 - Info event uchun notify yo'qligi tekshirildimi
 - Testlar 100% yashilmi
+
+## 11) Postman orqali test qilish
+
+Ushbu loyiha uchun tayyor Postman fayllari:
+
+- postman/BogchaGuardAI.postman_collection.json
+- postman/BogchaGuardAI.local.postman_environment.json
+
+Import qilish:
+
+1. Postman oching.
+2. Import tugmasini bosing.
+3. Yuqoridagi 2 ta JSON faylni tanlang.
+4. Environment sifatida Bogcha Guard AI Local ni tanlang.
+
+Ishlatish tartibi:
+
+1. Serverni yoqing.
+2. Collection ichida Cameras -> Create Camera ni yuboring.
+3. Javobdagi id ni environmentdagi cameraId ga qo'ying.
+4. Cameras -> Upload Camera Video orqali video_file ni fayl qilib yuboring.
+5. Events -> Filter Events By Camera bilan eventlarni tekshiring.
+6. Notifications -> List Notifications bilan notifylarni tekshiring.
+7. Notifications -> Mark Notification Read bilan notify holatini yangilang.
+
+Eslatma:
+
+- Upload Camera Video requestida video_file ni albatta File turida tanlang.
+- Agar aldamchi signal (Info) hosil bo'lsa, unga notify yaratilmasligi normal holat.
