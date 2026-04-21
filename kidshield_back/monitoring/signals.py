@@ -22,6 +22,13 @@ SEVERITY_MAP = {
 }
 
 
+def _is_false_positive(event_type: str, severity: str) -> bool:
+    """Mark low-confidence detections as false positives."""
+
+    del event_type
+    return severity == Event.Severity.INFO
+
+
 def _remove_file(file_field) -> None:
     """Physically remove a file from storage if it exists."""
 
@@ -81,7 +88,15 @@ def create_mock_ai_outputs(sender, instance: Camera, **kwargs):
         event_type = random.choice(event_types)
         second = random.randint(4, 59)
         severity = random.choice(SEVERITY_MAP[event_type])
-        description = f"{second}-soniyada {EVENT_LABELS[event_type]}."
+        is_false_positive = _is_false_positive(event_type, severity)
+
+        if is_false_positive:
+            description = (
+                f"{second}-soniyada {EVENT_LABELS[event_type]} "
+                "(aldamchi signal, notify yuborilmadi)."
+            )
+        else:
+            description = f"{second}-soniyada {EVENT_LABELS[event_type]}."
 
         event = Event.objects.create(
             camera=instance,
@@ -90,6 +105,9 @@ def create_mock_ai_outputs(sender, instance: Camera, **kwargs):
             description=description,
             is_resolved=False,
         )
+
+        if is_false_positive:
+            continue
 
         Notification.objects.create(
             event=event,
