@@ -1,0 +1,1 @@
+# kidshield_camera_modul
